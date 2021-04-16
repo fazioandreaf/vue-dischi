@@ -26,7 +26,7 @@
             flex-direction: column;
             align-content: center;
         }
-        .container div:first-child{
+        .container>div:first-child{
             align-self: center;
         }
         .allalbum{
@@ -53,9 +53,12 @@
             background-color: white;
             border-radius: 5px;
             margin: 5px;
+            padding: 5px;
+            
         }
         .album>img{
             width: 100px;
+            padding: 5px 0;
         }
         .album .author{
             font-weight: bold;
@@ -86,7 +89,7 @@
         <div class="allalbum">
             <div 
             v-if="genreSelected==elem.genre ||genreSelected=='All'"
-            v-for="elem in disc"
+            v-for="(elem,index) in disc"
             class="album">
             <img :src="elem.poster" alt="">
             <span class="author">
@@ -96,7 +99,7 @@
             {{elem.title}}
             </span>
             <span class="year">
-            {{elem.year}}
+            {{index + 1}}) {{elem.year}}
             </span>
             <span class="genre">
             {{elem.genre}}
