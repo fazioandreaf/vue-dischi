@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- cdn axion -->
+     <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding:0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: lightskyblue;
+        }
+        .container{
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            align-content: center;
+        }
+        .container div:first-child{
+            align-self: center;
+        }
+        .allalbum{
+            display: flex;
+            flex-wrap:wrap ;
+        }
+        .box{
+            width: 20px;
+            height: 20px;
+            margin: 2px;
+            
+            background-color: red;
+        }
+        .red{
+            background-color: red;
+        }
+        .green{
+            background-color: green;
+        }
+        .album{
+            display: flex;
+            flex-basis: 100px;
+            flex-direction: column;
+            background-color: white;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .album>img{
+            width: 100px;
+        }
+        .album .author{
+            font-weight: bold;
+        }
+        .album .title{
+            font-style: italic;
+        }
+        .album .year{
+            font-size:0.6rem;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <div>
+            <select v-model='genreSelected'
+            name="" id="">
+                <option 
+                v-for="elem in genre"
+                :value="elem">
+                {{elem}}</option>
+            </select>
+        </div>
+        <div class="allalbum">
+            <div 
+            v-if="genreSelected==elem.genre ||genreSelected=='All'"
+            v-for="elem in disc"
+            class="album">
+            <img :src="elem.poster" alt="">
+            <span class="author">
+            {{elem.author}}
+            </span>
+            <span class="title">
+            {{elem.title}}
+            </span>
+            <span class="year">
+            {{elem.year}}
+            </span>
+            <span class="genre">
+            {{elem.genre}}
+            </span>
+            
+            </div>
+        </div>
+    </div>
+    <script>
+                        // Attraverso una chiamata axios all'API di boolean
+                        // https://flynn.boolean.careers/exercises/api/array/music
+                        // avremo a disposizione una decina di dischi musicali. 
+                        // Utilizzando vue, stampiamo a schermo una card per ogni album.
+                        // BONUS: Creare una select con tutti i generi dei dischi. In base a cosa scegliamo nella select, vedremo i corrispondenti cd.
+                        // BONUS 2: Ordinare i dischi per anno di uscita.
+        function init(){
+            new Vue({
+                el:'#app',
+                data: {
+                    disc:null,
+                    genre:['All'],
+                    genreSelected:'All',
+                },
+                mounted(){
+                    axios.get('https://flynn.boolean.careers/exercises/api/array/music')
+                    .then(data => {
+                        this.disc = data.data.response;
+                        for(let i=0;i<this.disc.length;i++){
+                            let genreNew=this.disc[i].genre;
+                            if(!this.genre.includes(genreNew)?this.genre.push(genreNew):' ');
+                            // this.genre.push(genreNew)
+                        }
+                    })
+                    
+                    .catch(()=>console.log('error'));
+                }
+        });}
+        document.addEventListener('DOMContentLoader',init())
+    </script>
+</body>
+</html>
